@@ -1,0 +1,11 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  batch_id: 1
+  user_id: 1
+  fee: 1.5
+
+two:
+  batch_id: 1
+  user_id: 1
+  fee: 1.5

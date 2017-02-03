@@ -1,5 +1,11 @@
 source 'https://rubygems.org'
 
+gem 'devise'
+gem 'cancancan'
+gem 'razorpay'
+gem 'figaro'
+gem 'bootstrap-sass', '~> 3.3.6'
+
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
 gem 'rails', '4.2.7.1'

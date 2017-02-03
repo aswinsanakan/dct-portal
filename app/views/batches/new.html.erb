@@ -1,0 +1,27 @@
+<row class="col-md-4">
+	<%= form_for @batch do |f| %>
+
+		<div class="form-group">
+			<%= f.label :name %>
+			<%= f.text_field :name, class: "form-control", autofocus: true %>
+		</div>
+
+		<div class="form-group">
+			<%= f.label "Select course" %>
+			<%= f.collection_select :course_id, Course.all, :id, :title,prompt: "Select a course", class: "form-control" %>
+		</div>
+
+		<div class="form-group">
+			<%= f.label :start_date %>
+			<%= f.date_field :start_date, class: "form-control"%>
+		</div>
+
+		<div class="form-group">
+			<%= f.label :end_date %>
+			<%= f.date_field :end_date, class: "form-control"%>
+		</div>
+
+		<%= f.submit "Submit", class: "btn btn-success"%>
+	<%end%>
+	
+</row>
