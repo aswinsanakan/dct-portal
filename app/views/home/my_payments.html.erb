@@ -1,0 +1,26 @@
+<h3>My Payments</h3>
+
+<table class="table table-striped">
+  <tr>
+  	<th>Batch</th>
+  	<th>Type</th>
+  	<th>Amount</th>
+  	<th>Status</th>
+  	<th></th>
+  </tr>
+  <% @installments.each do |installment|%>
+  <tr>
+  	<td><%= installment.batch %></td>
+  	<td><%= installment.title %></td>
+  	<td><%= installment.amount %></td>
+  	<td>
+      <% if installment.is_paid %>
+        Completed
+      <%else%>
+        Pending
+      <%end%>
+    </td>
+  	
+  </tr>
+  <%end%>
+</table>

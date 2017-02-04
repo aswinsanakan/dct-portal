@@ -1,0 +1,20 @@
+<h3>My Batches</h3>
+
+<table class="table table-striped">
+  <tr>
+  	<th>Name</th>
+  	<th>Start Date</th>
+  	<th>End Date</th>
+  	<th>No. of students</th>
+  	<th></th>
+  </tr>
+  <%@batches.each do |batch|%>
+  <tr>
+  	<td><%= batch.name%></td>
+  	<td><%= batch.start_date%></td>
+  	<td><%= batch.end_date %></td>
+  	<td><%= batch.users.count %></td>
+  	
+  </tr>
+  <%end%>
+</table>

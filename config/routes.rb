@@ -1,17 +1,18 @@
 Rails.application.routes.draw do
   
-  get 'students/index'
+  get 'home/my_batches'
+  get 'home/my_payments'
+
+  devise_for :users
 
   resources :home
 
-  resources :batches
   scope '/admin' do
-    resources :students
+    resources :users
+    resources :batches
   end
 
 
-
-  devise_for :users
   
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".

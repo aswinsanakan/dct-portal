@@ -10,6 +10,15 @@
  * defined in the other CSS/SCSS files in this directory. It is generally better to create a new
  * file per style scope.
  *
+ *= require chosen
  */
+
 @import "bootstrap-sprockets";
 @import "bootstrap";
+
+
+.page-header {
+    padding-bottom: 9px;
+    margin: 0px 0 15px;
+    border-bottom: 2px solid #eeeeee;
+}

@@ -12,17 +12,14 @@ class User < ActiveRecord::Base
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :trackable, :validatable
   
-  after_create :assign_user_role, :set_confirmed_false
+  validates_uniqueness_of :email
+  after_create :assign_user_role
   
   def role?(role)
   	self.roles.pluck(:name).include? role
   end
 
   private
-
-  def set_confirmed_false
-    self.update_attributes(is_confirmed: false)
-  end
 
   def assign_user_role
   	Permission.create(user_id: self.id, role_id: Role.last.id)

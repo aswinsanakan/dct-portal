@@ -1,6 +1,7 @@
 class HomeController < ApplicationController
 	before_action :authenticate_user!
 	load_and_authorize_resource class: :home
+
   def index
   end
 
@@ -9,7 +10,7 @@ class HomeController < ApplicationController
   end
 
   def my_payments
-  	@my_payments = current_user.installments
+  	@installments = current_user.installments
 
   end
 end

@@ -1,0 +1,28 @@
+<div class="page-header col-md-4">
+	<h2>Students <%= link_to "Add student", new_user_path,class: "btn btn-primary pull-right" %></h2>	
+</div>
+
+
+<table class="table table-striped">
+	<thead>
+		<tr>
+			<th>#</th>
+			<th>Name</th>
+			<th>Email</th>
+			<th>Batches</th>
+			<th>Actions</th>
+		</tr>
+	</thead>
+	<tbody>
+		<% @users.each_with_index do |user,i| %>
+		<tr>
+			<td><%= i+1 %></td>
+			<td><%= user.name %></td>
+			<td><%= user.email %></td>
+			<td><%= user.batches.pluck(:name).join(', ') %></td>
+			<td><%= link_to "edit", edit_user_path(user) %> - <%= link_to "delete", user_path(user), method: :delete, data: {confirm: "Are you sure?"} %></td>
+		</tr>
+		<% end %>
+	</tbody>
+</table>
+

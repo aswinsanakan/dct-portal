@@ -1,0 +1,31 @@
+<div class="page-header col-md-4">
+  <h2>Batches <%= link_to "Add batch", new_batch_path, class: "btn btn-primary pull-right" %></h2>  
+</div>
+
+
+<br> <br>
+
+<table class="table table-striped">
+  <thead>
+    <tr>
+      <th>#</th>
+      <th>Batch</th>
+      <th>Start Date</th>
+      <th>End Date</th>
+      <th>No. of students</th>
+      <th>Actions</th>
+    </tr>    
+  </thead>
+  <tbody>
+    <%@batches.each_with_index do |batch,i|%>
+    <tr>
+      <td><%= i+1 %></td>
+      <td> <h4> <%= link_to batch.name, batch_path(batch.id) %></h4></td>
+      <td><%= batch.start_date%></td>
+      <td><%= batch.end_date %></td>
+      <td><%= batch.users.count %></td>
+      <td><%= link_to "edit", edit_batch_path(batch) %> - <%= link_to "delete", batch_path(batch), method: :delete, data: {confirm: "Are you sure?"} %></td>
+    </tr>
+    <%end%>    
+  </tbody>
+</table>

@@ -5,6 +5,8 @@ gem 'cancancan'
 gem 'razorpay'
 gem 'figaro'
 gem 'bootstrap-sass', '~> 3.3.6'
+gem 'chosen-rails'
+
 
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'

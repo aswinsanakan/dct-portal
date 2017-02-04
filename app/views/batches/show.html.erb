@@ -1,0 +1,49 @@
+<div class="page-header">
+  <h3><%= @batch.name %></h3>  
+</div>
+
+<div class="row">
+
+  <div class="col-md-8">
+    <table class="table table-striped">
+      <tr>
+        <th>#</th>
+        <th>Name</th>
+        <th>Email</th>
+        <th>Total Fee</th>
+      </tr>
+      <%@batch.users.each_with_index do |student,i|%>
+      <tr>
+        <td><%= i+1 %></td>
+        <td><%= student.name %></td>
+        <td><%= student.email%></td>
+        <td><%= BatchStudent.where('batch_id = ? AND user_id = ?', @batch.id, student.id).first.fee %></td>
+      </tr>
+      <%end%>
+    </table>
+  </div>
+
+  <div class="col-md-4">
+    <h4>Add students to batch</h4>
+    <%= form_for @batch do |f|%>
+      <div class="form-group" >
+         
+        <%= f.collection_select :user_ids, User.all, :id, :name,{prompt: ""}, {class: "chosen-select", multiple: true} %>
+
+         <%= f.submit "Add students", class: "btn btn-primary" %> 
+      </div>
+
+      <script>
+         $(".chosen-select").chosen({
+            /*max_selected_options: 2,*/
+            width: "100%",
+            placeholder_text_multiple: "Choose students.."
+
+          });
+      </script>
+     
+    <%end%>
+  </div>  
+
+</div>
+
