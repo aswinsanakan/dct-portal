@@ -1,4 +1,5 @@
 class Installment < ActiveRecord::Base
-	belongs_to :user
-	belongs_to :batch
+	has_one :order
+	belongs_to :batch_student
+
 end

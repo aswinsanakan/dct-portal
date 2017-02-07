@@ -8,7 +8,7 @@
   	<th>Status</th>
   	<th></th>
   </tr>
-  <% @installments.each do |installment|%>
+  <% @installments.flatten.each do |installment|%>
   <tr>
   	<td><%= installment.batch %></td>
   	<td><%= installment.title %></td>

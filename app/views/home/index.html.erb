@@ -1,5 +1,5 @@
-<% if can? :manage, :all %>
-	<h3><%= link_to "Admin Panel", "../admin/batches" %></h3> 
-<%end%>
-
 <h2>Welcome <%= current_user.name %> !</h2>
+
+<% if can? :manage, :all %>
+	<h3>Go to <%= link_to "Admin Panel", "../admin/batches" %></h3> 
+<%end%>

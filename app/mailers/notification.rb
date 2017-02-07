@@ -10,4 +10,12 @@ class Notification < ApplicationMailer
     @user = user
     mail to: "#{user.email}", subject: "DCTPay Login Details"
   end
+
+  def request_payment(batch_student,request_fee,payment_token)
+    @batch_student = batch_student
+    @user = batch_student.user
+    @request_fee = request_fee
+    @payment_token = payment_token
+    mail to: "#{@user.email}", subject: "DCTPay Fee Due"
+  end
 end

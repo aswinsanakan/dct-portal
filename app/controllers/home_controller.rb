@@ -10,7 +10,10 @@ class HomeController < ApplicationController
   end
 
   def my_payments
-  	@installments = current_user.installments
+  	@installments = []
+    current_user.batch_students.each do |batch_student|
+      @installments.push(batch_student.installments)
+    end
 
   end
 end

@@ -1,7 +1,16 @@
 Rails.application.routes.draw do
   
+  post '/payment' => 'orders#payment_status'
+  get "refund/:id", to: "orders#refund"
+  resources :orders, only: [:index,:show] 
+  
+
+  get 'payment_links/payment_complete'
+  resources :payment_links
+
   get 'home/my_batches'
   get 'home/my_payments'
+
 
   devise_for :users
 
@@ -9,6 +18,7 @@ Rails.application.routes.draw do
 
   scope '/admin' do
     resources :users
+    get 'batches/payment_mail'
     resources :batches
   end
 

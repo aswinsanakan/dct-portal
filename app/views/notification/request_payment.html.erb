@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Payment Link Web</title>
+<style>
+	.button {
+	    background-color: #4CAF50; /* Green */
+	    border: none;
+	    color: white;
+	    padding: 15px 32px;
+	    text-align: center;
+	    text-decoration: none;
+	    display: inline-block;
+	    font-size: 16px;
+	}
+</style>
+</head>
+<body>
+
+<h2>Hello, <%= @user.name %> !</h2>
+<h3>Here's your Fee details :</h3>
+<p>Total Course Fee : <%= @batch_student.fee %></p>
+<%balance = @batch_student.fee - @batch_student.installments.sum('amount') %>
+<p>Balance Fee : <%= balance %></p>
+<h3>Fee to be paid now : <%= @request_fee %></h3>
+<%= link_to "Pay Now", "http://localhost:3000/payment_links?payment_token=" + @payment_token, class: "button" %>
+
+<p>Regards,</p>
+<p> Aswin S - DCT Academy</p>
+
+</body>
+</html>

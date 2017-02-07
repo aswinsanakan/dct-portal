@@ -6,7 +6,7 @@ gem 'razorpay'
 gem 'figaro'
 gem 'bootstrap-sass', '~> 3.3.6'
 gem 'chosen-rails'
-
+gem 'pry', '~> 0.10.3'
 
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'

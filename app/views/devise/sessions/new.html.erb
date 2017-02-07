@@ -1,31 +1,73 @@
 
-<div class="col-md-4">
-<h2>Log in</h2>
+<!-- Trigger the modal with a button -->
+<!-- 
+<button type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#myModal">Open Modal</button>
+ -->
 
-  <%= form_for(resource, as: resource_name, url: session_path(resource_name)) do |f| %>
 
-    <div class="form-group">
-      <%= f.label :email %><br />
-      <%= f.email_field :email, autofocus: true, class: "form-control" %>
-    </div>
+<!-- Modal -->
+<div id="myModal" class="modal fade" role="dialog">
+  <div class="modal-dialog">
 
-    <div class="form-group">
-      <%= f.label :password %><br />
-      <%= f.password_field :password, autocomplete: "off", class: "form-control" %>
-    </div>
-
-    <% if devise_mapping.rememberable? -%>
-      <div class="form-group">
-        <%= f.check_box :remember_me %>
-        <%= f.label :remember_me %>
+    
+    <!-- Modal content-->
+    <div class="modal-content col-md-9">
+      <div class="modal-header">
+        <h3 class="modal-title text-center">Welcome to DCTPay!</h3>
       </div>
-    <% end -%>
+      
+      <div class="modal-body">
+        
+        <%if notice %>
+          <p class="alert alert-success" role="alert"><%= notice %></p>
+        <%elsif alert %> 
+          <p class="alert alert-danger" role="alert"><%= alert %></p>
+        <%end%>
+        
+        <h3>Log in</h3>
+          <%= form_for(resource, as: resource_name, url: session_path(resource_name)) do |f| %>
 
-    <div class="actions">
-      <%= f.submit "Log in", class: "btn btn-success" %>
+            <div class="form-group">
+              <%= f.label :email %><br />
+              <%= f.email_field :email, autofocus: true, class: "form-control" %>
+            </div>
+
+            <div class="form-group">
+              <%= f.label :password %><br />
+              <%= f.password_field :password, autocomplete: "off", class: "form-control" %>
+            </div>
+
+            <% if devise_mapping.rememberable? -%>
+              <div class="form-group">
+                <%= f.check_box :remember_me %>
+                <%= f.label :remember_me %>
+              </div>
+            <% end -%>
+
+            <div class="actions">
+              <%= f.submit "Log in", class: "btn btn-success" %>
+            </div>
+          <% end %>
+
+          <%= render "devise/shared/links" %>
+          
+        
+      
+      </div>
+
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+      </div>
     </div>
-  <% end %>
+    
 
-  <%= render "devise/shared/links" %>
-  
+  </div>
 </div>
+
+
+
+<script type="text/javascript">
+    $(window).load(function(){
+        $('#myModal').modal('show');
+    });
+</script>

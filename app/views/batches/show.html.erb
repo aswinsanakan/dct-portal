@@ -10,14 +10,101 @@
         <th>#</th>
         <th>Name</th>
         <th>Email</th>
-        <th>Total Fee</th>
+        <th>Course Fee</th>
+        <th>Balance Fee</th>
+        <th></th>
       </tr>
       <%@batch.users.each_with_index do |student,i|%>
       <tr>
         <td><%= i+1 %></td>
         <td><%= student.name %></td>
         <td><%= student.email%></td>
-        <td><%= BatchStudent.where('batch_id = ? AND user_id = ?', @batch.id, student.id).first.fee %></td>
+        <% batch_student = BatchStudent.find_by(batch: @batch, user: student) %>
+        <td>
+          <!-- Start of update fee button -->
+          <% if batch_student.fee %>
+            Rs. <%= batch_student.fee %>
+          <%end%>
+
+
+          <!-- Trigger the modal with a button -->
+          <button type="button" class="btn btn-default btn-sm" data-toggle="modal" data-target="#updateFee<%= batch_student.id %>">Update 
+          <%if batch_student.fee.nil? %>
+          Total Fee
+          <%end%></button>
+
+          <!-- Modal -->
+          <div id="updateFee<%= batch_student.id %>" class="modal fade" role="dialog">
+            <div class="modal-dialog">
+
+              <!-- Modal content-->
+              <div class="modal-content">
+                <div class="modal-header">
+                  <button type="button" class="close" data-dismiss="modal">&times;</button>
+                  <h4 class="modal-title">Update fee for <%= student.name %></h4>
+                </div>
+                <div class="modal-body">
+                  <%= form_tag(batch_path(@batch),method: "get", class: "form-inline") do %>
+                    Total fee : Rs.
+                    <%= text_field_tag :fee, params[:fee], class: "form-control" %>
+                    <%= hidden_field_tag :batch_student, batch_student.id %>
+                    <%= submit_tag "Update", class: "btn btn-default" %>
+                  <%end%>
+                </div>
+                <div class="modal-footer">
+                  <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                </div>
+              </div>
+
+            </div>
+          </div>  
+          <!-- End of Update fee button -->
+        </td>
+
+        <td>
+          <%if !batch_student.installments.empty? %>
+            
+            <% balance = batch_student.fee - batch_student.installments.sum('amount') %>
+            Rs. <%= balance %>
+          <%else%>
+            Rs. <%= batch_student.fee %>
+          <%end%>
+        </td>
+
+        <td>
+          <!-- Start of send mail button -->
+
+          <!-- Trigger the modal with a button -->
+          <button type="button" class="btn btn-default btn-sm" data-toggle="modal" data-target="#requestPay<%= batch_student.id %>">Request Payment</button>
+
+          <!-- Modal -->
+          <div id="requestPay<%= batch_student.id %>" class="modal fade" role="dialog">
+            <div class="modal-dialog">
+
+              <!-- Modal content-->
+              <div class="modal-content">
+                <div class="modal-header">
+                  <button type="button" class="close" data-dismiss="modal">&times;</button>
+                  <h4 class="modal-title">Request Payment from <%= student.name %></h4>
+                </div>
+                <div class="modal-body">
+                  <%= form_tag(batches_payment_mail_path, method: "get", class: "form-inline",id: "formPayMail") do %>
+                    Amount to request :
+                    <%= text_field_tag :request_fee, params[:request_fee],class: "form-control" %>
+                    <%= hidden_field_tag :send_mail, true %>
+                    <%= hidden_field_tag :batch_student, batch_student.id %>
+                    <%= submit_tag "Send Mail",class: "btn btn-primary" %>
+                  <%end%>
+                </div>
+                <div class="modal-footer">
+                  <button type="button" class="btn btn-default" data-dismiss="modal" id="btnCloseMail">Close</button>
+                </div>
+              </div>
+
+            </div>
+          </div>  
+          <!-- End of send mail button -->          
+        </td>
       </tr>
       <%end%>
     </table>
@@ -40,6 +127,14 @@
             placeholder_text_multiple: "Choose students.."
 
           });
+
+         var formPayMailHandle = document.getElementById('formPayMail');
+         var btnCloseMailHandle = document.getElementById('btnCloseMail');
+         formPayMailHandle.onsubmit = function(){
+          btnCloseMailHandle.click();
+          alert("Successfully send mail!");
+         }
+
       </script>
      
     <%end%>

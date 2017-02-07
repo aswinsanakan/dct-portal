@@ -6,7 +6,7 @@ class UsersController < ApplicationController
 	def index
 		@users = []
 		User.all.each do |user|
-			if user.roles.first.name == "student"
+			if user.role? "student"
 				@users.push(user)
 			end
 		end

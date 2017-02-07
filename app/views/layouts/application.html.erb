@@ -9,7 +9,7 @@
 </head>
 <body>
 
-
+<%if user_signed_in? %>
 <nav class="navbar navbar-default">
   <div class="container-fluid">
     <!-- Brand and toggle get grouped for better mobile display -->
@@ -59,14 +59,17 @@
   </div><!-- /.container-fluid -->
 </nav>
 
+<%end%>
 
 
 <div class="container">
 
-<%if notice %>
- 	<p class="alert alert-success" role="alert"><%= notice %></p>
-<%elsif alert %> 
- 	<p class="alert alert-danger" role="alert"><%= alert %></p>
+<%if !(request.fullpath == new_user_session_path) %>
+  <%if notice %>
+   	<p class="alert alert-success" role="alert"><%= notice %></p>
+  <%elsif alert %> 
+   	<p class="alert alert-danger" role="alert"><%= alert %></p>
+  <%end%>
 <%end%>
 
 <%= yield %>	

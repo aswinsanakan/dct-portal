@@ -1,0 +1,25 @@
+<div class="jumbotron text-center">
+  <h1>Hello, <%= @batch_student.user.name %>!</h1>
+  <p>Here's your payment details <span class="glyphicon glyphicon-hand-down"></span>	</p>
+  <p>Your current  installment amount is,</p> <b> <h3>Rs.<%= @payment_link.amount %> </h3> </b>
+ 
+<form action="/payment" method="POST">
+<script
+    src="https://checkout.razorpay.com/v1/checkout.js"
+    data-key="<%= "#{Figaro.env.MERCHANT_KEY_ID}" %>"
+	<% amount = @payment_link.amount * 100 %>
+    data-amount="<%= amount %>"
+    data-name="DCT Academy"
+	data-buttontext="Pay Now"
+    data-description="Installment of Rs.<%= @payment_link.amount %> by <%= @batch_student.user.name %>"
+
+    data-prefill.name="<%= @batch_student.user.name %>"
+    data-prefill.email="<%= @batch_student.user.email %>"
+    data-theme.color="#198F69"
+>
+</script>
+<input type="hidden" value="<%= @payment_link.id %>" name="payment_link_id">
+</form>
+
+ 
+</div>
