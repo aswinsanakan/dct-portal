@@ -12,10 +12,11 @@ class Order < ActiveRecord::Base
 	      razorpay_pmnt_obj = fetch_payment(params[:payment_id])
 	      status = fetch_payment(params[:payment_id]).status
 	      if status == "authorized"
-	        razorpay_pmnt_obj.capture({amount: payment_link.amount})
+	        razorpay_pmnt_obj.capture({amount: payment_link.amount.to_i * 100})
 	        razorpay_pmnt_obj = fetch_payment(params[:payment_id])
-	        installment = Installment.create(title: "INST-" + payment_link.amount.to_s,amount: payment_link.amount,batch_student_id: payment_link.batch_student_id)
-	        params.merge!({status: razorpay_pmnt_obj.status, price: payment_link.amount, installment_id: installment.id})
+	        installment = Installment.create(title: "INST-" + payment_link.amount.to_s,amount: payment_link.amount.to_i,batch_student_id: payment_link.batch_student_id)
+	        params.merge!({status: razorpay_pmnt_obj.status, price: payment_link.amount.to_i, installment_id: installment.id})
+	        params.delete(:payment_link_id)
 	        Order.create(params)
 	      else
 	        raise StandardError, "UNable to capture payment"

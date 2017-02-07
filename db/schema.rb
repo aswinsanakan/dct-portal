@@ -11,12 +11,12 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170207114851) do
+ActiveRecord::Schema.define(version: 20170207180358) do
 
   create_table "batch_students", force: :cascade do |t|
     t.integer  "batch_id"
     t.integer  "user_id"
-    t.float    "fee"
+    t.integer  "fee"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
@@ -41,7 +41,7 @@ ActiveRecord::Schema.define(version: 20170207114851) do
 
   create_table "installments", force: :cascade do |t|
     t.string   "title"
-    t.float    "amount"
+    t.integer  "amount"
     t.datetime "created_at",       null: false
     t.datetime "updated_at",       null: false
     t.integer  "batch_student_id"
@@ -60,7 +60,7 @@ ActiveRecord::Schema.define(version: 20170207114851) do
   create_table "payment_links", force: :cascade do |t|
     t.integer  "batch_student_id"
     t.string   "payment_token"
-    t.float    "amount"
+    t.integer  "amount"
     t.datetime "created_at",       null: false
     t.datetime "updated_at",       null: false
     t.boolean  "is_expired"

@@ -7,7 +7,7 @@
 <script
     src="https://checkout.razorpay.com/v1/checkout.js"
     data-key="<%= "#{Figaro.env.MERCHANT_KEY_ID}" %>"
-	<% amount = @payment_link.amount * 100 %>
+	<% amount = @payment_link.amount.to_i * 100 %>
     data-amount="<%= amount %>"
     data-name="DCT Academy"
 	data-buttontext="Pay Now"
