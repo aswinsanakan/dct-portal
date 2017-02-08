@@ -1,26 +1,20 @@
 <h3>My Payments</h3>
 
-<table class="table table-striped">
+<table class="table table-striped table-bordered">
   <tr>
+    <th>#</th>
   	<th>Batch</th>
-  	<th>Type</th>
+  	<th>Installment</th>
+    <th>Date</th>
   	<th>Amount</th>
-  	<th>Status</th>
-  	<th></th>
   </tr>
-  <% @installments.flatten.each do |installment|%>
+  <% @installments.flatten.each_with_index do |installment,i|%>
   <tr>
-  	<td><%= installment.batch %></td>
+    <td><%= i+1 %></td>
+  	<td><%= installment.batch_student.batch.name %></td>
   	<td><%= installment.title %></td>
+    <td><%= installment.created_at.to_date %></td>
   	<td><%= installment.amount %></td>
-  	<td>
-      <% if installment.is_paid %>
-        Completed
-      <%else%>
-        Pending
-      <%end%>
-    </td>
-  	
   </tr>
   <%end%>
 </table>

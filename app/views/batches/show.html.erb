@@ -1,27 +1,26 @@
 <div class="page-header">
-  <h3><%= @batch.name %></h3>  
+  <h3><%= @batch.name %> <small><%= @batch.course.title %></small> </h3>  
 </div>
-
 <div class="row">
 
   <div class="col-md-8">
     <table class="table table-striped">
       <tr>
         <th>#</th>
-        <th>Name</th>
+        <th >Name</th>
         <th>Email</th>
         <th>Course Fee</th>
         <th>Balance Fee</th>
         <th></th>
       </tr>
       <%@batch.users.each_with_index do |student,i|%>
-      <tr>
+      <tr class="accordion-toggle"  data-toggle="collapse" data-target="#collapse<%= i %>">
         <td><%= i+1 %></td>
-        <td><%= student.name %></td>
+        <td ><%= student.name %></td>
         <td><%= student.email%></td>
         <% batch_student = BatchStudent.find_by(batch: @batch, user: student) %>
-        <td>
-          
+        
+        <td> <!-- Course Fee start -->  
           <% if batch_student.fee %>
             Rs. <%= batch_student.fee %>
           <%end%>
@@ -59,21 +58,25 @@
             </div>
           </div>  
           <!-- End of Update fee button -->
-        </td>
+        </td> <!-- Course Fee end -->
 
-        <td>
+        <td> <!-- balance fee starts -->
           <%if !batch_student.installments.empty? %>
             
             <% balance = batch_student.fee - batch_student.installments.sum('amount') %>
-            Rs. <%= balance %>
-          <%else%>
+            <%if balance <= 0 %>
+              No more dues!
+            <%else%>
+              Rs. <span id="balanceFee"><%= balance %></span>
+            <%end%>
+            
+          <%elsif !batch_student.fee.nil? %>
             Rs. <%= batch_student.fee %>
           <%end%>
-        </td>
+        </td> <!-- balance fee ends -->
 
         <td>
           <!-- Start of send mail button -->
-
           <!-- Trigger the modal with a button -->
           <button type="button" class="btn btn-default btn-sm" data-toggle="modal" data-target="#requestPay<%= batch_student.id %>">Request Payment</button>
 
@@ -88,12 +91,13 @@
                   <h4 class="modal-title">Request Payment from <%= student.name %></h4>
                 </div>
                 <div class="modal-body">
-                  <%= form_tag(batches_payment_mail_path, method: "get", class: "form-inline",id: "formPayMail") do %>
+                  <%= form_tag(batches_payment_mail_path, method: "get", class: "form-inline") do %>
+                    <div id="errorRequest" ></div>
                     Amount to request :
-                    <%= text_field_tag :request_fee, params[:request_fee],class: "form-control" %>
+                    <%= text_field_tag :request_fee, params[:request_fee],class: "form-control", id: "requestFee" %>
                     <%= hidden_field_tag :send_mail, true %>
                     <%= hidden_field_tag :batch_student, batch_student.id %>
-                    <%= submit_tag "Send Mail",class: "btn btn-primary" %>
+                    <%= submit_tag "Send Mail",class: "btn btn-primary",id: "sendMail" %>
                   <%end%>
                 </div>
                 <div class="modal-footer">
@@ -106,6 +110,22 @@
           <!-- End of send mail button -->          
         </td>
       </tr>
+      <tr>
+        <td></td>
+        <td colspan="4">
+          <div id="collapse<%= i %>" class="collapse out">
+                <h4>Payments</h4>
+                <% batch_student.installments.each do |installment|%>
+                  <%= batch_student.user.name %> paid Rs.<%= installment.amount %> on <%= installment.created_at.to_date %> <br>
+                <%end%>
+                <%if batch_student.installments.empty? %>
+                  <p>No payments recorded!</p>
+                <%end%>
+          </div>
+        </td>
+        <td></td>
+      </tr>
+
       <%end%>
     </table>
   </div>
@@ -128,13 +148,18 @@
 
           });
 
-         var formPayMailHandle = document.getElementById('formPayMail');
-         var btnCloseMailHandle = document.getElementById('btnCloseMail');
-         formPayMailHandle.onsubmit = function(){
-          btnCloseMailHandle.click();
-          alert("Successfully send mail!");
-         }
+         var requestFeeHandle = document.getElementById('requestFee');
+         var sendMailHandle = document.getElementById('sendMail');
+         var errorHandle = document.getElementById('errorRequest');
+         var balanceFeeHandle = document.getElementById('balanceFee');
 
+         sendMailHandle.onclick = function(){
+          if (requestFeeHandle.value > balanceFeeHandle.value) {
+            alert("You entered a higher amount!")
+            //errorHandle.innerHTML = "You entered a higher amount!"
+            
+          }
+         }
       </script>
      
     <%end%>

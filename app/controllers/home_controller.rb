@@ -7,6 +7,7 @@ class HomeController < ApplicationController
 
   def my_batches
   	@batches = current_user.batches
+    @batch_students = current_user.batch_students
   end
 
   def my_payments

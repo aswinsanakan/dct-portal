@@ -26,23 +26,14 @@
     <!-- Collect the nav links, forms, and other content for toggling -->
     <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
       <ul class="nav navbar-nav">
-        <li >
-          <%if can? :manage, :all %>
-            <a href="/admin/batches">Batches <span class="sr-only">(current)</span></a>
-          <%else%>
-            <a href="/home/my_batches">My Batches <span class="sr-only">(current)</span></a>
-          <%end%>
-        </li>
-
-        <li>
-          <%if can? :manage, :all %>
-            <a href="/admin/users">Students</a>
-          <%else%>
-            <a href="/home/my_payments">My Payments</a>
-          <%end%>
-          
-        </li>
-        
+        <%if can? :manage, :all %>
+          <li ><a href="/admin/batches">Batches <span class="sr-only">(current)</span></a></li>
+          <li><a href="/admin/users">Students</a></li>
+          <li> <a href="/admin/payments">Payments</a> </li>
+        <%else%>
+          <li><a href="/home/my_batches">My Batches <span class="sr-only">(current)</span></a></li>
+          <li><a href="/home/my_payments">My Payments</a></li>
+        <%end%>
       </ul>
       
       <ul class="nav navbar-nav navbar-right">

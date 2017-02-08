@@ -1,5 +1,10 @@
+
 <div class="jumbotron text-center">
   <h1>Hello, <%= @batch_student.user.name %>!</h1>
+  
+<% if @payment_link.is_expired == false %>
+
+
   <p>Here's your payment details <span class="glyphicon glyphicon-hand-down"></span>	</p>
   <p>Your current  installment amount is,</p> <b> <h3>Rs.<%= @payment_link.amount %> </h3> </b>
  
@@ -21,5 +26,11 @@
 <input type="hidden" value="<%= @payment_link.id %>" name="payment_link_id">
 </form>
 
- 
+
+<%else%>
+
+<h2>Your payment was successful! <span class="glyphicon glyphicon-ok" aria-hidden="true" style="color: green"></span> </h2>
+
+<%end%>
+
 </div>

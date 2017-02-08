@@ -17,18 +17,13 @@ class Order < ActiveRecord::Base
 	        installment = Installment.create(title: "INST-" + payment_link.amount.to_s,amount: payment_link.amount.to_i,batch_student_id: payment_link.batch_student_id)
 	        params.merge!({status: razorpay_pmnt_obj.status, price: payment_link.amount.to_i, installment_id: installment.id})
 	        params.delete(:payment_link_id)
+	        payment_link.update_attributes(is_expired: true)
 	        Order.create(params)
 	      else
 	        raise StandardError, "UNable to capture payment"
 	      end
 	    end
 
-	    def process_refund(payment_id)
-	      fetch_payment(payment_id).refund
-	      record = Order.find_by_payment_id(payment_id)
-	      record.update_attributes(status: fetch_payment(payment_id).status)
-	      return record
-	    end
 
 	    def filter(params)
 	      scope = params[:status] ? Order.send(params[:status]) : Order.authorized

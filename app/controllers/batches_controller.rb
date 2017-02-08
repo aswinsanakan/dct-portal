@@ -49,7 +49,7 @@ class BatchesController < ApplicationController
 			payment_link = PaymentLink.create!(is_expired: false, batch_student_id: batch_student.id, payment_token: payment_token,amount: params[:request_fee].to_i)
 			#binding.pry
 			Notification.request_payment(batch_student,params[:request_fee].to_i,payment_token).deliver
-			redirect_to :back
+			redirect_to :back, notice: "Mail send successfully!"
 		end
 	end
 

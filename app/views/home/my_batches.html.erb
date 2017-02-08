@@ -1,19 +1,38 @@
 <h3>My Batches</h3>
 
-<table class="table table-striped">
+<table class="table table-striped table-bordered">
   <tr>
+    <th>#</th>
   	<th>Name</th>
+    <th>Course</th>
   	<th>Start Date</th>
   	<th>End Date</th>
   	<th>No. of students</th>
-  	<th></th>
+  	<th>Course Fee</th>
+    <th>Balance Fee</th>
   </tr>
-  <%@batches.each do |batch|%>
+  <%@batches.each_with_index do |batch,i|%>
   <tr>
+    <td><%= i+1 %></td>
   	<td><%= batch.name%></td>
+    <td><%= batch.course.title %></td>
   	<td><%= batch.start_date%></td>
   	<td><%= batch.end_date %></td>
   	<td><%= batch.users.count %></td>
+    <% batch_student = @batch_students.find_by_batch_id(batch.id) %>
+    <td>Rs.<%= batch_student.fee %></td>
+    <td>
+      <%if !batch_student.installments.empty? %>
+        <% balance = batch_student.fee - batch_student.installments.sum('amount') %>
+        <%if balance <= 0 %>
+          No more dues!
+        <%else%>
+          Rs. <%= balance %>
+        <%end%>
+      <%else%>
+        Rs. <%= batch_student.fee %>
+      <%end%>
+    </td>
   	
   </tr>
   <%end%>

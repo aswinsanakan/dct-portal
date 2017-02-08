@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170207180358) do
+ActiveRecord::Schema.define(version: 20170208095812) do
 
   create_table "batch_students", force: :cascade do |t|
     t.integer  "batch_id"
@@ -52,7 +52,6 @@ ActiveRecord::Schema.define(version: 20170207180358) do
     t.integer  "price"
     t.string   "status"
     t.string   "payment_id"
-    t.integer  "user_id"
     t.datetime "created_at",     null: false
     t.datetime "updated_at",     null: false
   end
