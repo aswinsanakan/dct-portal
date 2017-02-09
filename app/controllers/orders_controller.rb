@@ -1,5 +1,9 @@
 class OrdersController < ApplicationController
+  before_action :authenticate_user!
+  load_and_authorize_resource 
+
 	skip_before_filter :verify_authenticity_token
+  
   def payment_status
   	begin
   		@order = Order.process_razorpayment(payment_params)
@@ -9,14 +13,6 @@ class OrdersController < ApplicationController
   		flash[:alert] = "Unable to process payment."
       	redirect_to :back
   	end
-  end
-
-  def show
-    @order = Order.find_by_id(params[:id])
-  end
-  
-  def index
-    @orders = Order.filter(filter_params).page(params[:page]).per(20)
   end
 
   private

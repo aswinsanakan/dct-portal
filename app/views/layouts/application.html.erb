@@ -20,7 +20,13 @@
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
       </button>
-      <a class="navbar-brand" href="<%= root_path %>">DCT Pay</a>
+      <a class="navbar-brand" href=
+      <%if current_user.role? "student"%>
+        <%= "/home/my_batches" %>
+      <%else%>
+        <%= "/admin/batches" %>
+      <%end%>
+      >DCT Pay</a>
     </div>
 
     <!-- Collect the nav links, forms, and other content for toggling -->

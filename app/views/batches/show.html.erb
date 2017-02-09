@@ -14,13 +14,13 @@
         <th></th>
       </tr>
       <%@batch.users.each_with_index do |student,i|%>
-      <tr class="accordion-toggle"  data-toggle="collapse" data-target="#collapse<%= i %>">
-        <td><%= i+1 %></td>
-        <td ><%= student.name %></td>
-        <td><%= student.email%></td>
+      <tr class="accordion-toggle">
+        <td data-toggle="collapse" data-target="#collapse<%= i %>"><%= i+1 %></td>
+        <td data-toggle="collapse" data-target="#collapse<%= i %>"> <b><%= student.name %></b> </td>
+        <td data-toggle="collapse" data-target="#collapse<%= i %>"><%= student.email%></td>
         <% batch_student = BatchStudent.find_by(batch: @batch, user: student) %>
         
-        <td> <!-- Course Fee start -->  
+        <td > <!-- Course Fee start -->  
           <% if batch_student.fee %>
             Rs. <%= batch_student.fee %>
           <%end%>
@@ -60,7 +60,7 @@
           <!-- End of Update fee button -->
         </td> <!-- Course Fee end -->
 
-        <td> <!-- balance fee starts -->
+        <td data-toggle="collapse" data-target="#collapse<%= i %>"> <!-- balance fee starts -->
           <%if !batch_student.installments.empty? %>
             
             <% balance = batch_student.fee - batch_student.installments.sum('amount') %>
@@ -98,6 +98,7 @@
                     <%= hidden_field_tag :send_mail, true %>
                     <%= hidden_field_tag :batch_student, batch_student.id %>
                     <%= submit_tag "Send Mail",class: "btn btn-primary",id: "sendMail" %>
+                    <span id="mailText" class="hidden red-text">Amount exceeds balance due!</span>
                   <%end%>
                 </div>
                 <div class="modal-footer">
@@ -113,7 +114,7 @@
       <tr>
         <td></td>
         <td colspan="4">
-          <div id="collapse<%= i %>" class="collapse out">
+          <div id="collapse<%= i %>" class="collapse out ">
                 <h4>Payments</h4>
                 <% batch_student.installments.each do |installment|%>
                   <%= batch_student.user.name %> paid Rs.<%= installment.amount %> on <%= installment.created_at.to_date %> <br>
@@ -135,31 +136,24 @@
     <%= form_for @batch do |f|%>
       <div class="form-group" >
          
-        <%= f.collection_select :user_ids, User.all, :id, :name,{prompt: ""}, {class: "chosen-select", multiple: true} %>
+        <%= f.collection_select :user_ids, User.all, :id, :name_email_select ,{prompt: ""}, {class: "chosen-select", multiple: true} %>
 
          <%= f.submit "Add students", class: "btn btn-primary" %> 
       </div>
 
       <script>
-         $(".chosen-select").chosen({
-            /*max_selected_options: 2,*/
-            width: "100%",
-            placeholder_text_multiple: "Choose students.."
-
+              $(document).ready(function(){
+            $('#requestFee').on("keyup", function () {
+              if(Number($(this).val()) > Number($('#balanceFee').text())) {
+                $('#sendMail').addClass("hidden");
+                $('#mailText').removeClass("hidden");
+              }
+              else{
+               $('#sendMail').removeClass("hidden");
+               $('#mailText').addClass("hidden"); 
+              }
           });
-
-         var requestFeeHandle = document.getElementById('requestFee');
-         var sendMailHandle = document.getElementById('sendMail');
-         var errorHandle = document.getElementById('errorRequest');
-         var balanceFeeHandle = document.getElementById('balanceFee');
-
-         sendMailHandle.onclick = function(){
-          if (requestFeeHandle.value > balanceFeeHandle.value) {
-            alert("You entered a higher amount!")
-            //errorHandle.innerHTML = "You entered a higher amount!"
-            
-          }
-         }
+            });
       </script>
      
     <%end%>

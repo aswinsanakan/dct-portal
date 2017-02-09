@@ -13,10 +13,16 @@ class User < ActiveRecord::Base
          :recoverable, :rememberable, :trackable, :validatable
   
   validates_uniqueness_of :email
+  validates_presence_of :name
+  
   after_create :assign_user_role
   
   def role?(role)
   	self.roles.pluck(:name).include? role
+  end
+
+  def name_email_select
+    "#{self.name} -" + " #{self.email}"
   end
 
   private

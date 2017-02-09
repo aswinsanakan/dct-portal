@@ -4,13 +4,13 @@ class Ability
   def initialize(user)
 
     if user.nil?
-
     elsif user.role? "admin"
         can :manage, :all
-
     elsif user.role? "student"
-        can :read, :all
         can [:my_batches,:my_payments], :all 
+        can :manage, PaymentLink
+        can [:payment_status], Order
+        can :create, Installment
     end
     # Define abilities for the passed in user here. For example:
     #
